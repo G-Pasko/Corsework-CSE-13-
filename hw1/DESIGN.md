@@ -14,7 +14,17 @@ one player reaches the score of 100 or more.
 Psuedocode:
 
 prompt number of players
+
 check if number of players is in bound
 	if yes: continue with user input as players
 	if no: continue with 2 as players
+create array for player scores
+initialize player index at 0
+while x (player index) is <= num of players +1
+	prompt player x to roll
+	use cases to determine allocation of points and whos turn is next (by incrimenting x)
+	break if playerx's score is >=100
+
+
+
  
