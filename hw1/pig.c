@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include "names.h"
 
 typedef enum { SIDE , RAZORBACK , TROTTER , SNOUTER , JOWLER } Position ;
 const Position pig [7] = {
@@ -24,13 +25,16 @@ int main(void){
 	scanf("Enter seed%d\n", &seed);
 	if(!(seed < INT_MAX && seed > 0)){
 		fprintf(stderr, "Invalid ranodm seed. Using 2022 instead.\n");
-
 		seed = 2022;
 	}
 	int points[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	int player_index = 0;
 	while(player_index < (num_players + 1)){
-		printf("Placeholder");
+		printf(names[player_index]);
+		//roll pig
+		//add points to player
+		if(points[player_index] >= 100){
+			printf("Congradulations ", names.h[player_index]);
 	}
 }
 		
