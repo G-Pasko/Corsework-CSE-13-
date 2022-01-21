@@ -28,7 +28,10 @@ int main(void){
 		seed = 2022;
 	}
 	int points[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+	int player_index = 0;
+	while(player_index < (num_players + 1)){
+		printf("Placeholder");
+	}
 }
 		
 
