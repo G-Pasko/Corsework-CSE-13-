@@ -15,14 +15,19 @@ const Position pig [7] = {
 };
 
 int main(void){
-	int num_players = 0;
-	scanf("Enter number of players%d\n", &num_players);
+	int num_players;
+	printf("num_players initialzied\n");
+	printf("Enter number of players: \n");
+	scanf("%d", &num_players);
 	if(!(num_players < 11) && (num_players > 1)){
 		num_players = 2;
 		fprintf(stderr, "Invalid number of players. Using 2 instead .\n");
 	}
+	printf("num players defined\n");
+	
 	int seed = 0;
-	scanf("Enter seed%d\n", &seed);
+	printf("Enter seed: \n");
+	scanf("%d", &seed);
 	if(!(seed < INT_MAX && seed > 0)){
 		fprintf(stderr, "Invalid ranodm seed. Using 2022 instead.\n");
 		seed = 2022;
@@ -30,12 +35,26 @@ int main(void){
 	int points[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	int player_index = 0;
 	while(player_index < (num_players + 1)){
-		printf(names[player_index]);
-		//roll pig
-		//add points to player
+		printf("%s", names[player_index]);
+		int roll = (random() % 7);
+		switch(pig[roll]){
+			case SIDE:
+				;
+			case RAZORBACK:
+				points[player_index] += 10;
+			case TROTTER:
+				points[player_index] +=10;
+			case SNOUTER:
+				points[player_index] += 15;
+			case JOWLER:
+				points[player_index] += 5;
+			}
 		if(points[player_index] >= 100){
-			printf("Congradulations ", names.h[player_index]);
+			printf("Congradulations %s\n", names[player_index]);
+		break;
+		}
 	}
+	return 0;
 }
 		
 
