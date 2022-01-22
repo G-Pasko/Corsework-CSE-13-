@@ -18,8 +18,8 @@ int main(void){
 	int num_players = 0;
 	int num_players_input;
 	int prev_player = 8;
-	printf("num_players initialzied\n");
-	printf("Enter number of players: \n");
+	//printf("num_players initialzied\n");
+	printf("How many players? ");
 	scanf("%d", &num_players_input);
 	if(!(num_players < 11) && (num_players > 1)){
 		num_players = 2;
@@ -32,7 +32,7 @@ int main(void){
 	
 	int seed = 0;
 	int seed_input;
-	printf("Enter seed: \n");
+	printf("Random seed: ");
 	scanf("%d", &seed_input);
 	//printf("seed is: %d and seed_input is %d\n", seed, seed_input);
 	if((seed_input < INT_MAX) && (seed_input > 0)){
@@ -54,6 +54,7 @@ int main(void){
 	int player_index = 0;
 	while(player_index < (num_players + 1)){
 		//printf("player_index: %d. prev_player: %d\n", player_index, prev_player);
+		//printf("%d", player_index == prev_player);
 		if(player_index != prev_player){
 			printf("%s rolls the pig...", names[player_index]);
 		}
@@ -62,31 +63,47 @@ int main(void){
 			case SIDE:
 				printf("pig lands on side\n");
 				if(points[player_index] >= 100){
-					printf("%s wins with %d points!\n", names[player_index], points[player_index]);
+					printf("\n%s wins with %d points!\n", names[player_index], points[player_index]);
 					return 0;
 				}
 				prev_player = player_index;
 				player_index += 1;
-				prev_player = player_index;
+				//prev_player = player_index;
 				break;
 			case RAZORBACK:
 				printf("pig lands on back ");
 				points[player_index] += 10;
+				if(points[player_index] >= 100){
+					printf("\n%s wins with %d points!\n", names[player_index], points[player_index]);
+					return 0;
+				}
 				prev_player = player_index;
 				break;
 			case TROTTER:
 				printf("pig lands upright ");
 				points[player_index] +=10;
+				if(points[player_index] >= 100){
+					printf("\n%s wins with %d points!\n", names[player_index], points[player_index]);
+					return 0;
+				}
 				prev_player = player_index;
 				break;
 			case SNOUTER:
 				printf("pig lands on snout ");
 				points[player_index] += 15;
+				if(points[player_index] >= 100){
+					printf("\n%s wins with %d points!\n", names[player_index], points[player_index]);
+					return 0;
+				}
 				prev_player = player_index;
 				break;
 			case JOWLER:
 				printf("pig lands on ear ");
 				points[player_index] += 5;
+				if(points[player_index] >= 100){
+					printf("\n%s wins with %d points!\n", names[player_index], points[player_index]);
+					return 0;
+				}
 				prev_player = player_index;
 				break;
 			}
