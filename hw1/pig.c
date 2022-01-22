@@ -43,7 +43,7 @@ int main(void){
 		//seed = 2022;
 	}
 	else{
-		fprintf(stderr, "Invalid ranodm seed. Using 2022 instead.\n");
+		fprintf(stderr, "Invalid random seed. Using 2022 instead.\n");
                 seed = 2022;
 
 		//seed = seed_input;
@@ -56,7 +56,7 @@ int main(void){
 		//printf("player_index: %d. prev_player: %d\n", player_index, prev_player);
 		//printf("%d", player_index == prev_player);
 		if(player_index != prev_player){
-			printf("%s rolls the pig...", names[player_index]);
+			printf("%s rolls the pig... ", names[player_index]);
 		}
 		int roll = (random() % 7);
 		switch(pig[roll]){
