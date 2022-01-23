@@ -21,9 +21,9 @@ int main(void){
 	//printf("num_players initialzied\n");
 	printf("How many players? ");
 	scanf("%d", &num_players_input);
-	if(!(num_players < 11) && (num_players > 1)){
+	if(!(num_players_input < 11) && (num_players_input > 1)){
 		num_players = 2;
-		fprintf(stderr, "Invalid number of players. Using 2 instead .\n");
+		fprintf(stderr, "Invalid number of players. Using 2 instead.\n");
 	}
 	else{
 		num_players = num_players_input;
