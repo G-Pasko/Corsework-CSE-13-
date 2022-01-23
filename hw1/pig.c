@@ -17,7 +17,7 @@ const Position pig [7] = {
 int main(void){
 	int num_players = 0;
 	int num_players_input;
-	int prev_player = 8;
+	int prev_player = 99;
 	//printf("num_players initialzied\n");
 	printf("How many players? ");
 	scanf("%d", &num_players_input);
@@ -33,14 +33,17 @@ int main(void){
 	int seed = 0;
 	int seed_input;
 	printf("Random seed: ");
-	scanf("%d", &seed_input);
+	if((scanf("%d", &seed_input) == 1) && (seed_input < INT_MAX) && (seed_input > 0)){
 	//printf("seed is: %d and seed_input is %d\n", seed, seed_input);
-	if((seed_input < INT_MAX) && (seed_input > 0)){
-		seed = seed_input;
+		//if((seed_input < INT_MAX) && (seed_input > 0)){
+			//seed = seed_input;
                 //printf("seed defined as %d\n", seed);
 
 		//fprintf(stderr, "Invalid ranodm seed. Using 2022 instead.\n");
 		//seed = 2022;
+		//}
+		seed = seed_input;
+		
 	}
 	else{
 		fprintf(stderr, "Invalid random seed. Using 2022 instead.\n");
