@@ -23,24 +23,20 @@ return total
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Reduce:
 
-Literally don't know where to start tbh
+Create for loop to loop through len
+Set inital equal to results of f (helper function)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Max with Reduce:
 
+If initial is smaller than comparing variable: set initial to variable
+return initial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sum with redude:
+Sum of pos with redude:
 
+if num is >0 add num to initial
+return initial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Counting neg with redude:
-
+if num < 0: add 1 to initial
+return initial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Main:
-
-Read int from input.txt and put them into an array called nums
-run Max with nums
-run Sum with nums
-run Max with Reduce with nums
-run Counting Pos with reduce with nums
-run Counting Neg With reduce with nums
-
-
