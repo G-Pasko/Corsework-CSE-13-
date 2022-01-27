@@ -1,10 +1,10 @@
 CC = clang
 
 # You'll need to delete this line once you're done with your code.
-CFLAGS =
+# CFLAGS =
 
 # You'll need to uncomment this line once you're done with your code.
-# CFLAGS = -Wall -Wpedantic -Werror -Wextra
+CFLAGS = -Wall -Wpedantic -Werror -Wextra
 
 
 all: hw2
