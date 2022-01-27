@@ -7,7 +7,7 @@
 int maximum(int *nums, int len) {
 	int max = INT_MIN;
 	int i;
-	for(i = 0; i < len(nums); i++){
+	for(i = 0; i < len; i++){
 		if(nums[i] > max){
 			max = nums[i];
 		}
@@ -17,7 +17,15 @@ int maximum(int *nums, int len) {
 }
 
 int sum_positive(int *nums, int len) {
-  return 0;
+	int total = 0;
+	int i;
+	for(i = 0; i < len; i++){
+		if(nums[i] > 0){
+			total += nums[i];
+		}
+	}
+	return total;
+	return 0;
 }
 
 int reduce(int *nums, int len, int (*f)(int,int), int initial){
