@@ -8,10 +8,11 @@ to use and run.
 Psuedocode:
 
 Stack Push:
+Get size of stack and set it to variable
 Push the value to the top of the stack
-Check if top of stack is the value of the new node
-if yes: return true
-if no: return fasle
+Check if new size of stack is the same as old size
+if yes: return false
+if no: return true
 
 Stack pop:
 Create variable and set its value to the value at bottom of the stack. Then, free the bottom node of the stack and
