@@ -16,13 +16,15 @@ Stack *stack_create(void) {
 // so (eg, if memory allocation fails).
 bool stack_push(Stack *s, CalculatorItem item) {
   // your code here					
-	Node *newnode = (Node *)calloc(1, sideof(item));
-	newnode->data = item;
-	newnode->next = rest;
-	if(Stack->top == *newnode){
+	Node *newnode = (Node *)calloc(1, sizeof(item));
+	newnode->item = item;
+	newnode->next = s->top;
+	if((Node *)s->top == newnode->next){
+		//printf("1");
 		return true;
 	}
 	else{
+		//printf("0");
 		return false;
 	}
 }
