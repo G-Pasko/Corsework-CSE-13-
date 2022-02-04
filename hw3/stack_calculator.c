@@ -22,19 +22,14 @@ bool stack_push(Stack *s, CalculatorItem item) {
 	if(newnode == NULL){
 		return false;
 	}
-	newnode->item = item;
-	newnode->next = s->top;
-	s->top = newnode;
-	//printf("%lu/n", sizeof(s));
-	/*if(sizeof(s) == old_size){		This loop was meant to check if size grew but doesn't work
-		//printf("1");			Look for ways to tweak later or try another method
-		return false;
-	}
-	else{
-		//printf("0");
+	if(item.type == NUMBER){	
+		newnode->item = item;
+		newnode->next = s->top;
+		s->top = newnode;
 		return true;
-	}*/
-	return true;
+	}
+	return stack_compute_step(s, item);
+	
 }
 
 // Pop the stack and put the result into the output pointer.
@@ -44,10 +39,13 @@ bool stack_pop(Stack *s, CalculatorItem *output) {
 	if(s->top == NULL){
 		return false;
 	}
-	*output = s->top->item;
-	Node* newtop = s->top->next;
+	//*output = s->top_item;
+	free(s->top->next);
 	free(s->top);
-	s->top = newtop;
+	stack_push(s, *output);
+	/*Node* newtop = s->top->next;
+	free(s->top);
+	s->top = newtop;*/
 	return true;
 }
 
@@ -66,16 +64,35 @@ bool stack_empty(Stack *s) {
 // When you are done, set the pointer to NULL.
 void stack_delete(Stack **s) {
   // your code here
-	while(*s->top->item != NULL){
-		Node* next_node = *s->top->next;
-		free(*s->top);
-		s->top = next_node;
+	if(s == NULL){
+		*s = NULL;
 	}
+	Node* next_top = (*s)->top->next;
+	next_top->next = (*s)->top->next->next;
+	free((*s)->top);
+	(*s)->top = next_top;
+	stack_delete(s);
+
+	/*while(s != NULL){
+		Node* next_node = (Node *)s->top->next;
+		free(s->top);
+		s->top = next_node;
+	}*/
 }
 
 // Returns true if we were able to successfully perform the computation step,
 // and false if there was an error of some kind.
 bool stack_compute_step(Stack *s, CalculatorItem item) {
   // your code here
+	CalculatorItem  computed_item;
+	CalculatorItem second = s->top->item;
+	CalculatorItem first = s->top->next->item;
+	if(item.type == ADD){
+		computed_item.value = first.value + second.value;
+		stack_pop(s, &computed_item);
+	}
+		
+		
+		
   return true;
 }
