@@ -65,15 +65,13 @@ void stack_delete(Stack **s) {
 		stack_delete(s);
 	}
 	*/
-	
-	Node* next_node = (*s)->top->next->next;
-	while((*s)->top->next != NULL){
-	//	Node* next_node = (*s)->top->next->next;
-		free((*s)->top->next);
-		(*s)->top->next = next_node;
+	if((*s)->top != NULL){
+		Node *delete = (*s)->top;
+		(*s)->top->next = (*s)->top;
+		free(delete);
 		stack_delete(s);
-	}
-	//free((*s)->top);	
+	}	
+		
 	free(*s);
 	*s = NULL;
 }
