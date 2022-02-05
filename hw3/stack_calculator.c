@@ -16,13 +16,10 @@ Stack *stack_create(void) {
 // so (eg, if memory allocation fails).
 bool stack_push(Stack *s, CalculatorItem item) {
   // your code here					
-	//int old_size = sizeof(s);
-	//printf("%lu/n", sizeof(s));
 	Node *newnode = (Node *)calloc(1, sizeof(item));
 	if(newnode == NULL){
 		return false;
-	}
-	//if(item.type == NUMBER){	
+	}	
 	newnode->item = item;
 	newnode->next = s->top;
 	s->top = newnode;
@@ -42,9 +39,6 @@ bool stack_pop(Stack *s, CalculatorItem *output) {
 	Node *temp = s->top->next;
 	free(s->top);
 	s->top = temp;
-	/*Node* newtop = s->top->next;
-	free(s->top);
-	s->top = newtop;*/
 	return true;
 }
 
@@ -63,14 +57,23 @@ bool stack_empty(Stack *s) {
 // When you are done, set the pointer to NULL.
 void stack_delete(Stack **s) {
   // your code here
-	
-	Node* new_top = (*s)->top->next;
-	while((*s)->top->next != NULL){
-		free((*s)->top);
-		(*s)->top = new_top;
+	/*	
+	Node* temp = (*s)->top;
+	while(temp != NULL){
+		(*s)->top = temp->next;
+		free(temp);
 		stack_delete(s);
 	}
+	*/
 	
+	Node* next_node = (*s)->top->next->next;
+	while((*s)->top->next != NULL){
+	//	Node* next_node = (*s)->top->next->next;
+		free((*s)->top->next);
+		(*s)->top->next = next_node;
+		stack_delete(s);
+	}
+	//free((*s)->top);	
 	free(*s);
 	*s = NULL;
 }
@@ -95,8 +98,25 @@ bool stack_compute_step(Stack *s, CalculatorItem item) {
 		return true;
 	}
 	if(item.type == DIVIDE){
-		
-		
+		if(second.value == 0){
+			return false;
+		}
+		computed_item.value = first.value / second.value;
+		stack_push(s, computed_item);
+		return true;
+	}
+	
+	if(item.type == MULTIPLY){
+		computed_item.value = first.value * second.value;
+		stack_push(s, computed_item);
+		return true;
+	}
+	
+	if(item.type == SUBTRACT){
+		computed_item.value = first.value - second.value;
+		stack_push(s, computed_item);
+		return true;
+	}			
 		
   return true;
 }
