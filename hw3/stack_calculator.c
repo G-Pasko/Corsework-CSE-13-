@@ -22,13 +22,12 @@ bool stack_push(Stack *s, CalculatorItem item) {
 	if(newnode == NULL){
 		return false;
 	}
-	if(item.type == NUMBER){	
-		newnode->item = item;
-		newnode->next = s->top;
-		s->top = newnode;
-		return true;
-	}
-	return stack_compute_step(s, item);
+	//if(item.type == NUMBER){	
+	newnode->item = item;
+	newnode->next = s->top;
+	s->top = newnode;
+	return true;
+	//}
 	
 }
 
@@ -36,13 +35,13 @@ bool stack_push(Stack *s, CalculatorItem item) {
 // return false if the stack is NULL or if it is empty.
 bool stack_pop(Stack *s, CalculatorItem *output) {
   // your code here
-	if(s->top == NULL){
+	if(s->top == NULL || s == NULL){
 		return false;
 	}
-	//*output = s->top_item;
-	free(s->top->next);
+	*output = s->top->item;
+	Node *temp = s->top->next;
 	free(s->top);
-	stack_push(s, *output);
+	s->top = temp;
 	/*Node* newtop = s->top->next;
 	free(s->top);
 	s->top = newtop;*/
@@ -64,33 +63,38 @@ bool stack_empty(Stack *s) {
 // When you are done, set the pointer to NULL.
 void stack_delete(Stack **s) {
   // your code here
-	if(s == NULL){
-		*s = NULL;
+	
+	Node* new_top = (*s)->top->next;
+	while((*s)->top->next != NULL){
+		free((*s)->top);
+		(*s)->top = new_top;
+		stack_delete(s);
 	}
-	Node* next_top = (*s)->top->next;
-	next_top->next = (*s)->top->next->next;
-	free((*s)->top);
-	(*s)->top = next_top;
-	stack_delete(s);
-
-	/*while(s != NULL){
-		Node* next_node = (Node *)s->top->next;
-		free(s->top);
-		s->top = next_node;
-	}*/
+	
+	free(*s);
+	*s = NULL;
 }
 
 // Returns true if we were able to successfully perform the computation step,
 // and false if there was an error of some kind.
 bool stack_compute_step(Stack *s, CalculatorItem item) {
   // your code here
-	CalculatorItem  computed_item;
-	CalculatorItem second = s->top->item;
-	CalculatorItem first = s->top->next->item;
+	if(item.type == NUMBER){
+		stack_push(s, item);
+		return true;
+	}
+	CalculatorItem computed_item;
+	CalculatorItem second;
+	stack_pop(s, &second);
+	CalculatorItem first;
+	stack_pop(s, &first);
+	
 	if(item.type == ADD){
 		computed_item.value = first.value + second.value;
-		stack_pop(s, &computed_item);
+		stack_push(s, computed_item);
+		return true;
 	}
+	if(item.type == DIVIDE){
 		
 		
 		
