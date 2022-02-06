@@ -8,24 +8,32 @@ to use and run.
 Psuedocode:
 
 Stack Push:
-Get size of stack and set it to variable
-Push the value to the top of the stack
-Check if new size of stack is the same as old size
-if yes: return false
-if no: return true
+Create node
+If new node is null return false
+set item to item of new node and set next to top and set new node to top
+
 
 Stack pop:
-Create variable and set its value to the value at bottom of the stack. Then, free the bottom node of the stack and
-Move the other values down one spot.
+If top equals null return false
+Set output to item of top
+Make  temp equal top.nect
+Pop top and set  top to temp
 
 Stack empty:
 If size of stack is 0, return true
 
 Stack delete:
-Recursive loop:
-	If top = null return pointer
-	else free bottom of of stack and run stack delete with value.next as param
+If Top doesnt equal null 
+	set temp to top
+	set top.next to top
+	delete temp
+	call delete again
 
 Stack Compute Step:
-I'm not sure how to do this one, tbh but I'll try to come back to it later after starting some of the other
-functions.
+If item type is number: call push stacl
+call pop twice and set value of popped item to y and x respectively
+if add: push node w item equal to x + y
+if subtract: push node w item equal to x - y
+if mult: push node w item equal to x * y
+if divide: push node w item equal to x / y
+	if y = 0 return false
