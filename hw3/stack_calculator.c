@@ -36,9 +36,9 @@ bool stack_pop(Stack *s, CalculatorItem *output) {
 		return false;
 	}
 	*output = s->top->item;
-	Node *temp = s->top->next;
-	free(s->top);
-	s->top = temp;
+	Node *temp = s->top;
+	s->top = s->top->next;
+	free(temp);
 	return true;
 }
 
@@ -65,11 +65,16 @@ void stack_delete(Stack **s) {
 		stack_delete(s);
 	}
 	*/
-	if((*s)->top != NULL){
-		Node *delete = (*s)->top;
-		(*s)->top->next = (*s)->top;
+	
+	Node *delete = (*s)->top;
+	while((*s)->top != NULL){
+		//Node *delete = (*s)->top;
+		(*s)->top = (*s)->top->next;
 		free(delete);
 		stack_delete(s);
+		//free(delete);
+
+		
 	}	
 		
 	free(*s);
