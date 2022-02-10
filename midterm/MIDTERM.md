@@ -46,7 +46,8 @@ recursion. My plan is to have an if check to see what the input n is. If it's 0 
 I set two variables (num1 and num2) to 1. I'll append num1. If n == 1 ill return the array.
 I'll then append num2 and if n == 2 return the array. Then Ill make a for loop and I will 
 declare a temp var to be the sum of the two 1's, append that value to the array, set num1 to
-value of num 2, sest num 2 to value of sum (temp). return array at the end.
+value of num 2, sest num 2 to value of sum (temp). return array at the end. This works becasue it uses the last two
+values in the fib sequence to create the third then uses that new value for the next position in the sequence.
 
 ## problem 2
 
@@ -97,8 +98,9 @@ YOUR PLAN & EXPLANATION HERE (code goes in midterm.c)
 
 To do this, I will first make a helper function to find length of numbers by using recursion and adding one to 
 return value every time there is a next node. I will then create a new array with length and sizeof(LLfloat) as 
-params. I will for loop through the new array until i == length and set every value at i in the new array to 
-f(numbers[i]) then return the new array.
+params for calloc. I will for loop through the new array until i == length and set every value at i in the new array
+to f(numbers[i]) then return the new array. I ran into an error where accessing numbers[i] would only give the value
+to every other position so I multiplied i by 2 in the index and it fixed my problem.
 
 ## problem 4
 
@@ -115,8 +117,11 @@ a single `unsigned long` where each bit in the unsigned long is set to 1 if *all
 users* are available at that time.
 
 YOUR PLAN & EXPLANATION HERE (code goes in midterm.c)
-If there are 0 people return 0. If there is 1 person return their availability. If there is more, loop through
-calendars and use bitwise and to comapre each persons calendar and return the result.
+If there are 0 people return 0. If there is 1 person return their availability. If there is more, I'll set 
+availability to calendars[0] then loop through calendars and use bitwise and to comapre each persons calendar to
+availability thus getting the intersection of all the calendars and then return the result. This works because if
+you use bitwise and for multiple bit vectors, the result will only have a 1 in the position that all other vectors
+had a 1 in.
 
 ## problem 5 (short answer)
 

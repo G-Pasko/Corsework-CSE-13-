@@ -134,17 +134,25 @@ int main(void) {
 	ShoeCustomer *list;
 	list = (ShoeCustomer *)calloc(5, sizeof(ShoeCustomer));
 	list[0].shoe_size = 7; 
+	list[0].customer_id = 13; 
+	list[1].customer_id = 54; 
 	list[1].shoe_size = 4;
+
+	list[2].customer_id = 67; 
 	list[2].shoe_size = 9;
+
+	list[3].customer_id = 99; 
 	list[3].shoe_size = 6;
+
+	list[4].customer_id = 11; 
 	list[4].shoe_size = 8;
 	
 	for(int i = 0; i < 5; i++){
-		printf("List at %d pre-sort: %d\n", i, list[i].shoe_size);
+		printf("List at %d pre-sort: Size: %d ID: %d\n", i, list[i].shoe_size, list[i].customer_id);
 	}
 	bubble_sort_customers(list, 5);
 	for(int i = 0; i < 5; i++){
-		printf("List at %d post-sort: %d\n", i, list[i].shoe_size);
+		printf("List at %d post-sort: Size: %d ID: %d\n", i, list[i].shoe_size, list[i].customer_id);
 	}
 		
 	printf("\nTest for problem 3\n");
@@ -154,8 +162,8 @@ int main(void) {
 	LLfloat *newLL3  = (LLfloat *)calloc(1, sizeof(LLfloat));
 	linkedList->val = 10;
 	newLL1->val = 9;
-	newLL2->val = 9;
-	newLL3->val = 9;
+	newLL2->val = 8;
+	newLL3->val = 7;
 	linkedList->next = newLL1;
 	newLL1->next = newLL2;
 	newLL2->next = newLL3;
