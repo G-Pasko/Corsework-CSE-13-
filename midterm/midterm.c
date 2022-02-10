@@ -62,32 +62,50 @@ void bubble_sort_customers(ShoeCustomer* customers, int n_customers) {
 
 // PROBLEM 3
 
+
 // A linked list of floating point numbers.
 typedef struct LLfloat {
   float val;
   struct LLfloat *next;
 } LLfloat;
 
+
+/* Helper function to find length of numbers
+int length_of(LLfloat *list, int counter){
+	if(list->next){
+		counter ++;
+		length_of(list->next, counter);
+	}
+	return counter;
+
+}*/
+
 LLfloat *map_floats(float (*f)(float), LLfloat *numbers)  {
   // finish this function.
   // Should it be recursive? It's up to you, but it could be recursive!
-	LLfloat *new_array = NULL;
-	if(numbers->next != NULL){
-		new_array = (LLfloat *)calloc(1, sizeof(float));
-		LLfloat check = numbers[0];
-		while(numbers.next != NULL){
-			new_array[i].val = f(numbers[i].val);
-			
-		}
-	}
+	LLfloat *new_array = numbers;
+	
 	return NULL;
 }
 
 // PROBLEM 4
 
 unsigned long compute_availability(unsigned long *calendars, int num_users) {
-  unsigned long availability = 0;
-  return availability;
+	unsigned long availability = 0;
+	if(num_users == 0){
+		return availability;
+	}
+	if(num_users == 1){
+		return calendars[0];
+	}
+	availability = calendars[0];
+	//printf("%lu\n", calendars[0]);
+	
+	//printf("%lu\n", calendars[0] & calendars[1]);
+	for(int i = 1; i < num_users; i++){
+		availability = calendars[i] & availability;
+	}
+	return availability;
 }
 
 // put examples for testing your functions in the main! You're going to have to
@@ -119,6 +137,15 @@ int main(void) {
 		//printf("List post-sort: %d\n", list);
 		printf("List at %d post-sort: %d\n", i, list[i].shoe_size);
 	}
+		
+	
+
+	unsigned long calanders[4];
+	calanders[0] = 2;
+	calanders[1] = 3;
+	calanders[2] = 19; 
+	calanders[3] = 22;
+	printf("%lu\n", compute_availability(calanders, 4));
 	return 0;
 	
 }
