@@ -69,23 +69,35 @@ typedef struct LLfloat {
   struct LLfloat *next;
 } LLfloat;
 
+float sqr(float in){
+	return in * in;
+}
 
-/* Helper function to find length of numbers
+// Helper function to find length of numbers
 int length_of(LLfloat *list, int counter){
-	if(list->next){
+	if(list->next != NULL){
 		counter ++;
-		length_of(list->next, counter);
+		return length_of(list->next, counter);
 	}
 	return counter;
 
-}*/
+}
 
 LLfloat *map_floats(float (*f)(float), LLfloat *numbers)  {
   // finish this function.
   // Should it be recursive? It's up to you, but it could be recursive!
-	LLfloat *new_array = numbers;
-	
-	return NULL;
+
+	if(numbers == NULL){
+		return NULL;
+	}
+	int length = length_of(numbers, 1);	
+	LLfloat *new_array = (LLfloat *)calloc(length, sizeof(LLfloat));
+
+	for(int i = 0; i < length; i++){
+		new_array[i].val = f(numbers[i*2].val);
+		
+	}
+	return new_array;
 }
 
 // PROBLEM 4
@@ -99,9 +111,7 @@ unsigned long compute_availability(unsigned long *calendars, int num_users) {
 		return calendars[0];
 	}
 	availability = calendars[0];
-	//printf("%lu\n", calendars[0]);
 	
-	//printf("%lu\n", calendars[0] & calendars[1]);
 	for(int i = 1; i < num_users; i++){
 		availability = calendars[i] & availability;
 	}
@@ -112,15 +122,15 @@ unsigned long compute_availability(unsigned long *calendars, int num_users) {
 // figure out how to test these.
 int main(void) {
 	int user_input;
+	printf("Test for problem 1\n");
 	printf("Enter Fibonacci position\n");
 	scanf("%d", &user_input);
-	//printf("%d\n", user_input);
 	for(int i = 0; i < user_input; i++){
 		
 		printf("%llu\n", fibonacci_numbers(user_input)[i]);
 	}
-	printf("End of Fibonacci check\n");
-	
+
+	printf("Test for problem 2\n");	
 	ShoeCustomer *list;
 	list = (ShoeCustomer *)calloc(5, sizeof(ShoeCustomer));
 	list[0].shoe_size = 7; 
@@ -134,12 +144,26 @@ int main(void) {
 	}
 	bubble_sort_customers(list, 5);
 	for(int i = 0; i < 5; i++){
-		//printf("List post-sort: %d\n", list);
 		printf("List at %d post-sort: %d\n", i, list[i].shoe_size);
 	}
 		
+	printf("\nTest for problem 3\n");
+	LLfloat *linkedList  = (LLfloat *)calloc(1, sizeof(LLfloat));
+	LLfloat *newLL1  = (LLfloat *)calloc(1, sizeof(LLfloat));
+	LLfloat *newLL2  = (LLfloat *)calloc(1, sizeof(LLfloat));
+	LLfloat *newLL3  = (LLfloat *)calloc(1, sizeof(LLfloat));
+	linkedList->val = 10;
+	newLL1->val = 9;
+	newLL2->val = 9;
+	newLL3->val = 9;
+	linkedList->next = newLL1;
+	newLL1->next = newLL2;
+	newLL2->next = newLL3;
+	newLL3->next = NULL;
+	linkedList = map_floats(sqr, linkedList);
+	printf("%f\n", linkedList->val);
 	
-
+	printf("Test for problem 4\n");
 	unsigned long calanders[4];
 	calanders[0] = 2;
 	calanders[1] = 3;
@@ -147,5 +171,4 @@ int main(void) {
 	calanders[3] = 22;
 	printf("%lu\n", compute_availability(calanders, 4));
 	return 0;
-	
 }
