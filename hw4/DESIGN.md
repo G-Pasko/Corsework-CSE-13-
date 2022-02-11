@@ -1,0 +1,27 @@
+Design Doc:
+
+For this assignment, we are tasked with fidning and returning certain paths for traverssing a graph. We will need
+to do it once by implementing stack and once with loops or recursion. We will also be working with structs to
+help us keep track of paths and nodes. I plan to review the lecture where the professor went over graphing 
+algorithems and also try to find my CSE30 assignment where we worked on graphs to get an idea of the structure.
+
+Psuedo:
+Breadth First Search:
+
+(Psuedo code given in README)
+
+keep a set of vertices that we have visited
+keep a queue of vertices that we want to visit
+put the starting vertex into the queue
+while there are more places to visit in the queue:
+	dequeue the next place to visit
+	see if it is our intended destination -- if it is, return success!
+	otherwise, make sure it is in the set of visited nodes
+	enqueue each of its neighbors that have not been visited
+return false if the queue becomes empty (we ran out of options)
+
+Depth-First Search:
+
+From starting point, check the children of each child until there is no child left. At the end of checking each 
+branch, if the path contains the end goal, compare lengths and return the longest path.
+
