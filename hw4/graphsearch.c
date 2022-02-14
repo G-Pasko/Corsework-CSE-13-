@@ -30,7 +30,7 @@ bool set_contains(LLint *set, int val) {
 // will allocate a new linked list node and return that.
 LLPath *enqueue_path(LLPath *q, Path path) {
   // YOUR CODE HERE
-	LLPath *newnode = calloc(1, LLPath);
+	LLPath *newnode = calloc(1, sizeof(LLPath));
 	newnode->val = q->val;
 	if(q == NULL){
 		return newnode; 
@@ -49,7 +49,7 @@ bool dequeue_path(LLPath **q, Path *ret) {
 	if(*q == NULL){
 		return false;
 	}	
-	*ret = (*1)->val;
+	*ret = (*q)->val;
 
 	LLint *free = *q;
 	*q = (*q)->next;
@@ -106,7 +106,31 @@ void print_path(Path path) {
 // Breadth-first search!
 Path graph_find_path_bfs(Graph *g, int i, int j) {
   // YOUR CODE HERE.
+	LLint *visited = NULL;
+	LLint *to_visit = NULL;
+		
+	to_visit = enqueue(to_visit, i);
+	
+	while(to_visit != NULL){
+		int current;
+		dequeue(&to_visit, &current);
+		
+		if(current == j){
+			//reutrn the path to the node
+			Path empty = {0, {0}};
+			return empty;
+		}
+		
+		visited = add_to_set(visited, current);
+		
+		for(int nieghbor = 0; neighbor < g->vertices; nieghbor++){
+			if(graph_has_edge(g, current, nieghbor) && !set_contains(visited, nieghbor)){
+				to_visit = enqueue(to_visit, nieghbor);
+			}
+		}
+	}
 
+		
   Path empty = {0, {0}};
   return empty;
 }
