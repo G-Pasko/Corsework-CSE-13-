@@ -128,7 +128,6 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 			}	//For loop is meant to obtain next possible nodes and put them in to_visit
 		}
 	}
-
 		
   Path empty = {0, {0}};
   return empty;
@@ -136,28 +135,65 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 
 
 // Depth-first search!
+/*
+typedef struct Node {			//Pulled structs from hw3
+	LLPath item;
+	struct Node *next;
+} Node;
 
-bool stack_push(LLPath *s, int item) {
-   // your code here                                     
-	LLint *newnode = (Node *)calloc(1, sizeof(item));
+typedef struct {
+	Node *top;
+} Stack;
+
+*/
+bool stack_push(Stack *s, Path new) {	//Pulled stack push from hw3
+	LLPath *newnode = (LLPath *)calloc(1, sizeof(LLPath));
 	if(newnode == NULL){
 		return false;
 	}
-	newnode->val = item;
-	newnode->next = s;
+	newnode->val = new;
+	newnode->next = s->top;
+	s->top = newnode;
 	return true;
 }
 
-bool stack_pop(Path *s, int *output) {
-	if(s == NULL || s == NULL){
+bool stack_pop(Stack *s, Path *output) {	//Pulled stack pop form hw3
+	if(s->top == NULL || s == NULL){
 		return false;
 	}
-	*output = s->vertices_visited[s.size];
-	Node *temp = s->top;
+	*output = s->top->val;
+	LLPath *temp = s->top;
 	s->top = s->top->next;
 	free(temp);
 	return true;
 }
+
+bool stack_empty(Stack *s) {
+	if(s->top == NULL){
+		return true;
+	}
+	return false;
+}
+
+
+Stack *stack_create(void) {		//Pulled stack create from hw3
+	Stack *out;
+	out = (Stack *)calloc(1, sizeof(Stack));
+	return out;
+}
+
+void stack_delete(Stack **s) {
+	Node *delete = (*s)->top;
+	while((*s)->top != NULL){
+		(*s)->top = (*s)->top->next;
+		free(delete);
+		stack_delete(s);
+	}	
+	free(*s);
+	*s = NULL;
+}
+
+
 
 //Make helper functions for stack
 Path graph_find_path_dfs(Graph *g, int i, int j) {
@@ -172,11 +208,28 @@ Path graph_find_path_dfs(Graph *g, int i, int j) {
 		push each of its neighbors that have not been visited
 	return false if the stack becomes empty (we ran out of options)
 */
-	graph_find_path_bfs(g, i, j);
-	LLint *visited = NULL;		//Same initialization as demo but changed type to match lab
-	LLPath *to_visit = NULL;
-	stack_push(to_visit, i	
-}
+	//graph_find_path_bfs(g, i, j);
+	
+	LLint *visited = NULL;		//Same initialization as demo but changed type to match la	
+	Stack *to_visit = create_stack();
+	Path test_path;
+	test_path.steps = 0;
+	stack_push(to_visit, path_extend(test_path, i));
+	while(to_visit != NULL){
+		Path current;
+		stack_pop(to_visit, &current);
+		current_val = current.vertices_visited[current.steps - 1];
+		if(current_val == j){
+			return current;
+		}
+
+		visited = add_to_set(visited, current_val);     // Add most recent node to "visited"
+		for(int nieghbor = 0; nieghbor < g->vertices; nieghbor++){
+			if(graph_has_edge(g, current_val, nieghbor) && !set_contains(visited, nieghbor)){
+				stack_push(to_visit, path_extend(current, neighbor));                         
+				}       //For loop is meant to obtain next possible nodes and put them in to_visit
+                 }
+         }
 
   Path empty = {0, {0}};
   return empty;

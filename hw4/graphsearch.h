@@ -23,6 +23,11 @@ typedef struct LLPath {
   struct LLPath *next;
 } LLPath;
 
+typedef struct {
+  LLPath *top;
+} Stack;
+
+
 LLint *add_to_set(LLint *set, int val);
 bool set_contains(LLint *set, int val);
 
