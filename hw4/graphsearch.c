@@ -30,28 +30,28 @@ bool set_contains(LLint *set, int val) {
 // will allocate a new linked list node and return that.
 LLPath *enqueue_path(LLPath *q, Path path) {
   // YOUR CODE HERE
-	LLPath *newnode = calloc(1, sizeof(LLPath));
-	newnode->val = q->val;
+	LLPath *newnode = calloc(1, sizeof(LLPath));	//Copied from demo but changed types to match lab
+	newnode->val = path;
 	if(q == NULL){
 		return newnode; 
 	}
 	
-	LLint *cur = q;
+	LLPath *cur = q;
 	while(cur->next != NULL){
 		cur = cur->next;
 	}
 	cur->next = newnode;
-  return q;
+	return q;
 }
 
 bool dequeue_path(LLPath **q, Path *ret) {
   // YOUR CODE HERE
-	if(*q == NULL){
+	if(*q == NULL){			//Copied from demo but changed types to match lab
 		return false;
 	}	
 	*ret = (*q)->val;
 
-	LLint *free = *q;
+	LLPath *freethis = *q;
 	*q = (*q)->next;
 	free(freethis);
 	return true;
@@ -106,27 +106,26 @@ void print_path(Path path) {
 // Breadth-first search!
 Path graph_find_path_bfs(Graph *g, int i, int j) {
   // YOUR CODE HERE.
-	LLint *visited = NULL;
-	LLint *to_visit = NULL;
-		
-	to_visit = enqueue(to_visit, i);
+	LLint *visited = NULL;			//Same initialization as demo but changed type to match lab
+	LLPath *to_visit = NULL;		
+	Path test_path;				//Create test path to obtain initial to_visit values	
+	test_path.steps = 0;			//Set steps to 0 because thats the only way to make it run for some reason
+	to_visit = enqueue_path(to_visit, path_extend(test_path, i));	//Use path extned to make new path for param
+									//so that to_return doesnt get uninitialized
 	
 	while(to_visit != NULL){
-		int current;
-		dequeue(&to_visit, &current);
-		
-		if(current == j){
-			//reutrn the path to the node
-			Path empty = {0, {0}};
-			return empty;
+		Path current;				//Initialize new path to return
+		dequeue_path(&to_visit, &current);	//Enter to visit value into next node on current path
+		int current_val = current.vertices_visited[current.steps -1];
+		if(current_val == j){
+			return current;
 		}
 		
-		visited = add_to_set(visited, current);
-		
-		for(int nieghbor = 0; neighbor < g->vertices; nieghbor++){
-			if(graph_has_edge(g, current, nieghbor) && !set_contains(visited, nieghbor)){
-				to_visit = enqueue(to_visit, nieghbor);
-			}
+		visited = add_to_set(visited, current_val);	// Add most recent node to "visited"
+		for(int nieghbor = 0; nieghbor < g->vertices; nieghbor++){
+			if(graph_has_edge(g, current_val, nieghbor) && !set_contains(visited, nieghbor)){
+				to_visit = enqueue_path(to_visit, path_extend(current, nieghbor));
+			}	//For loop is meant to obtain next possible nodes and put them in to_visit
 		}
 	}
 
@@ -137,8 +136,47 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 
 
 // Depth-first search!
+
+bool stack_push(LLPath *s, int item) {
+   // your code here                                     
+	LLint *newnode = (Node *)calloc(1, sizeof(item));
+	if(newnode == NULL){
+		return false;
+	}
+	newnode->val = item;
+	newnode->next = s;
+	return true;
+}
+
+bool stack_pop(Path *s, int *output) {
+	if(s == NULL || s == NULL){
+		return false;
+	}
+	*output = s->vertices_visited[s.size];
+	Node *temp = s->top;
+	s->top = s->top->next;
+	free(temp);
+	return true;
+}
+
+//Make helper functions for stack
 Path graph_find_path_dfs(Graph *g, int i, int j) {
-  // YOUR CODE HERE.
+  /* YOUR CODE HERE.
+	keep a set of vertices that we have visited
+	keep a stack of vertices that we want to visit
+	put the starting vertex into the stack
+	while there are more places to visit in the stack:
+		pop the next place to visit
+		see if it is our intended destination -- if it is, return success!
+		otherwise, add to set of visited nodes if not in set
+		push each of its neighbors that have not been visited
+	return false if the stack becomes empty (we ran out of options)
+*/
+	graph_find_path_bfs(g, i, j);
+	LLint *visited = NULL;		//Same initialization as demo but changed type to match lab
+	LLPath *to_visit = NULL;
+	stack_push(to_visit, i	
+}
 
   Path empty = {0, {0}};
   return empty;
