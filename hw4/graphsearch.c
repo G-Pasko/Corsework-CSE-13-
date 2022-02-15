@@ -9,7 +9,6 @@ LLint *add_to_set(LLint *set, int val) {
   LLint *newfront = calloc(1, sizeof(LLint));
   newfront->val = val;
   newfront->next = set;
-
   return newfront;
 }
 
@@ -135,17 +134,6 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 
 
 // Depth-first search!
-/*
-typedef struct Node {			//Pulled structs from hw3
-	LLPath item;
-	struct Node *next;
-} Node;
-
-typedef struct {
-	Node *top;
-} Stack;
-
-*/
 bool stack_push(Stack *s, Path new) {	//Pulled stack push from hw3
 	LLPath *newnode = (LLPath *)calloc(1, sizeof(LLPath));
 	if(newnode == NULL){
@@ -183,7 +171,7 @@ Stack *stack_create(void) {		//Pulled stack create from hw3
 }
 
 void stack_delete(Stack **s) {
-	Node *delete = (*s)->top;
+	LLPath *delete = (*s)->top;
 	while((*s)->top != NULL){
 		(*s)->top = (*s)->top->next;
 		free(delete);
@@ -210,23 +198,29 @@ Path graph_find_path_dfs(Graph *g, int i, int j) {
 */
 	//graph_find_path_bfs(g, i, j);
 	
-	LLint *visited = NULL;		//Same initialization as demo but changed type to match la	
-	Stack *to_visit = create_stack();
-	Path test_path;
+	LLint *visited = NULL;		//Create set to hold visited nodes	
+	Stack *to_visit = stack_create();	//Create stack to hold nodes to visit
+	Path test_path;				//Create path to implement starting point using path_extend
 	test_path.steps = 0;
 	stack_push(to_visit, path_extend(test_path, i));
-	while(to_visit != NULL){
+	int prev_node = -1;
+	while(to_visit != NULL){		//While there are nodes to visit...
 		Path current;
 		stack_pop(to_visit, &current);
-		current_val = current.vertices_visited[current.steps - 1];
+		int current_val = current.vertices_visited[current.steps - 1];
+		if(prev_node == current_val){
+			Path empty = {0, {0}};
+			return empty;
+		}
+		prev_node = current_val;
 		if(current_val == j){
 			return current;
 		}
-
 		visited = add_to_set(visited, current_val);     // Add most recent node to "visited"
+		printf("Weve visited: %d\n", visited->val);
 		for(int nieghbor = 0; nieghbor < g->vertices; nieghbor++){
 			if(graph_has_edge(g, current_val, nieghbor) && !set_contains(visited, nieghbor)){
-				stack_push(to_visit, path_extend(current, neighbor));                         
+				stack_push(to_visit, path_extend(current, nieghbor));                         
 				}       //For loop is meant to obtain next possible nodes and put them in to_visit
                  }
          }
