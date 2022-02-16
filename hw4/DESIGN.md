@@ -20,8 +20,10 @@ while there are more places to visit in the queue:
 	enqueue each of its neighbors that have not been visited
 return false if the queue becomes empty (we ran out of options)
 
+Create graph and path delete to free all data allotted to the process
 Depth-First Search:
 
-From starting point, check the children of each child until there is no child left. At the end of checking each 
-branch, if the path contains the end goal, compare lengths and return the longest path.
-
+Use the same structure as BFS except use the stack structs and functions from HW3
+Use the stack to create the "to visit" set and use stack push for neighbors not in "visited"
+Pop values from to add to "current"
+Use stack delete functions to clear memory
