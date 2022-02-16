@@ -59,7 +59,8 @@ int main(int argc, char **argv) {
   printf("searching with DFS from %d to %d\n", start, end);
   path = graph_find_path_dfs(g, start, end);
   print_path(path);
-  free(g);
+  graph_delete(&g);
+  //free(g);
   fclose(infile);
   return 0;
 }

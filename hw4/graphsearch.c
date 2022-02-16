@@ -36,9 +36,23 @@ bool stack_push(Stack *s, Path new) {	//Pulled stack push from hw3
 void graph_delete(Graph **g){
 	for(int i = 0; i < (*g)->vertices; i++){
 		free((*g)->matrix[i]);
-	}
+	}	
+	free((*g)->matrix);
+	free(*g);
+	g = NULL;
 }
 
+
+void set_delete(LLint **set){
+	LLint *delete = (*set);
+	while((*set) != NULL){
+		(*set) = (*set)->next;
+		free(delete);
+		set_delete(set);
+	}
+	free((*set));
+	set = NULL;
+}
 bool stack_pop(Stack *s, Path *output) {	//Pulled stack pop form hw3
 	if(s->top == NULL || s == NULL){
 		return false;
@@ -57,7 +71,6 @@ bool stack_empty(Stack *s) {
 	return false;
 }
 
-
 Stack *stack_create(void) {		//Pulled stack create from hw3
 	Stack *out;
 	out = (Stack *)calloc(1, sizeof(Stack));
@@ -65,13 +78,13 @@ Stack *stack_create(void) {		//Pulled stack create from hw3
 }
 
 void stack_delete(Stack **s) {
-	LLPath *delete = (*s)->top;
 	while((*s)->top != NULL){
+		LLPath *delete = (*s)->top;
 		(*s)->top = (*s)->top->next;
 		free(delete);
 	}
-	free(*s);
-	*s = NULL;
+	free((*s));
+	s = NULL;
 }
 
 // Linked lists of paths. You'll need to implement these.
@@ -86,7 +99,6 @@ LLPath *enqueue_path(LLPath *q, Path path) {
 	if(q == NULL){
 		return newnode; 
 	}
-	
 	LLPath *cur = q;
 	while(cur->next != NULL){
 		cur = cur->next;
@@ -101,7 +113,6 @@ bool dequeue_path(LLPath **q, Path *ret) {
 		return false;
 	}	
 	*ret = (*q)->val;
-
 	LLPath *freethis = *q;
 	*q = (*q)->next;
 	free(freethis);
@@ -132,7 +143,6 @@ bool graph_has_edge(Graph *g, int i, int j) {
 Path path_extend(Path path, int new_vertex) {
   Path out;
   out.steps = path.steps;
-
   for (int i=0; i < path.steps; i++) {
     out.vertices_visited[i] = path.vertices_visited[i];
   }
@@ -169,7 +179,9 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 		dequeue_path(&to_visit, &current);	//Enter to visit value into next node on current path
 		int current_val = current.vertices_visited[current.steps -1];
 		if(current_val == j){
-			graph_delete(&g);
+			//graph_delete(&g);
+			free(to_visit);
+			set_delete(&visited);
 			return current;
 		}
 		
@@ -180,7 +192,8 @@ Path graph_find_path_bfs(Graph *g, int i, int j) {
 			}	//For loop is meant to obtain next possible nodes and put them in to_visit
 		}
 	}
-		
+  free(to_visit);
+  set_delete(&visited);		
   Path empty = {0, {0}};
   return empty;
 }
@@ -198,7 +211,6 @@ Path graph_find_path_dfs(Graph *g, int i, int j) {
 		push each of its neighbors that have not been visited
 	return false if the stack becomes empty (we ran out of options)
 */
-	//graph_find_path_bfs(g, i, j);
 	
 	LLint *visited = NULL;		//Create set to hold visited nodes	
 	Stack *to_visit = stack_create();	//Create stack to hold nodes to visit
@@ -211,24 +223,26 @@ Path graph_find_path_dfs(Graph *g, int i, int j) {
 		stack_pop(to_visit, &current);
 		int current_val = current.vertices_visited[current.steps - 1];
 		if(prev_node == current_val){
+  			set_delete(&visited);
+  			stack_delete(&to_visit);
 			Path empty = {0, {0}};
 			return empty;
 		}
 		prev_node = current_val;
 		if(current_val == j){
 			stack_delete(&to_visit);
-			graph_delete(&g);
+			set_delete(&visited);
 			return current;
 		}
 		visited = add_to_set(visited, current_val);     // Add most recent node to "visited"
-		printf("Weve visited: %d\n", visited->val);
 		for(int nieghbor = 0; nieghbor < g->vertices; nieghbor++){
 			if(graph_has_edge(g, current_val, nieghbor) && !set_contains(visited, nieghbor)){
 				stack_push(to_visit, path_extend(current, nieghbor));                         
 				}       //For loop is meant to obtain next possible nodes and put them in to_visit
                  }
          }
-
+  stack_delete(&to_visit);
+  set_delete(&visited);
   Path empty = {0, {0}};
   return empty;
 }

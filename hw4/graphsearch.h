@@ -41,4 +41,6 @@ bool graph_has_edge(Graph *g, int i, int j);
 Path graph_find_path_bfs(Graph *g, int i, int j);
 Path graph_find_path_dfs(Graph *g, int i, int j);
 
+void graph_delete(Graph **g);
+
 void print_path(Path path);
