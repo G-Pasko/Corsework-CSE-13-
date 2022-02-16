@@ -222,7 +222,7 @@ Path graph_find_path_dfs(Graph *g, int i, int j) {
 		Path current;
 		stack_pop(to_visit, &current);
 		int current_val = current.vertices_visited[current.steps - 1];
-		if(prev_node == current_val){
+		if(prev_node == current_val){		//Inf loop check for impossible graphs
   			set_delete(&visited);
   			stack_delete(&to_visit);
 			Path empty = {0, {0}};
