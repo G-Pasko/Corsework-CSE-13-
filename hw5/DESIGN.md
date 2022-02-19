@@ -15,6 +15,15 @@ Score guess:
 	Else: Compare each letter in guess to that of secret and return a string with corresponding x,y,g values.
 
 Valid Guess:
-	
+	Iterrate through the vocab list and do strcmp with guess and each word. If result ever equals 0 return true
+	Else return false
+
+Load Vocablary:
+	Open file and do calloc(size_t, charr) to allocate enough room for every word in the vocab list. Then iterrate through the file and copy the strings. Finally,
+	close the file and return the array of strings
+
+Free vocabulary:
+	Iterate through array of words returned by LoadVocab and free their memery addresss until the the array is empty. Once the array is empty, free the memory address of the 
+	array.
 
 
