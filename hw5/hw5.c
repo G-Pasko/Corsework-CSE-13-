@@ -16,22 +16,26 @@
 //   5. (ie, at least 6 bytes long)
 bool score_guess(char *secret, char *guess, char *result) {
   // TODO(you): finish this function
-	while(strcmp(secret, guess) != 0){
+	while(strncmp(secret, guess, 5) != 0){
 		for(int i = 0; i < 5; i++){
 			if(guess[i] == secret[i]){
-				strcpy(result, ("g"));
+				result[i] = 'g';
+				//strcpy(result, ('g'));
 			}
 			for(int j = i; j < 5; j++){
 				if(guess[i] == secret[j]){
-					strcpy(result, ("y"));
+					result[i] = 'y';
+					//strcpy(result, ('y'));
 				}
 				else{
-					strcpy(result, ("x"));
+					result[i] = 'x';
+					//strcpy(result, ('x'));
 				}
 			}
 		}
 		return false;
 	}
+	result = "ggggg";
 	return true;
 }
 
@@ -66,11 +70,23 @@ bool valid_guess(char *guess, char **vocabulary, size_t num_words) {
 // Each element of the array should be a single five-letter word,
 // null-terminated.
 char **load_vocabulary(char *filename, size_t *num_words) {
-  char **out = NULL;
-  // TODO(you): finish this function
+	char **out = (char **)calloc(*num_words, sizeof(char));
+	// TODO(you): finish this function
+	
 	FILE vocab = *fopen(filename, "r");
+	for(size_t i = 1; i < *num_words; i++){
+		out[i] = strndup(filename, 5);
+		if(i > *num_words){
+			if(realloc(out, 10 * sizeof(char)) != NULL){
+				out = (char **)realloc(out, 10 * sizeof(char));
+			}
+			else{
+				return out;
+			}
+		}
+	}
 	fclose(&vocab);
-	printf("%zu\n", *num_words);
+	//printf("%zu\n", *num_words);
 	return out;
 }
 
@@ -81,6 +97,7 @@ void free_vocabulary(char **vocabulary, size_t num_words) {
 	for(size_t i = 0; i < num_words; i++){
 		free(vocabulary[i]);
 	}
+	free(vocabulary);
 	
 }
 
