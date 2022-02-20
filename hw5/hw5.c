@@ -70,22 +70,36 @@ bool valid_guess(char *guess, char **vocabulary, size_t num_words) {
 // Each element of the array should be a single five-letter word,
 // null-terminated.
 char **load_vocabulary(char *filename, size_t *num_words) {
-	char **out = (char **)calloc(*num_words, sizeof(char));
+	printf("Load vocab started\n");
+
+	char **out = (char **)calloc(10, sizeof(char));
 	// TODO(you): finish this function
-	
+	size_t word_count = 10;
 	FILE vocab = *fopen(filename, "r");
-	for(size_t i = 1; i < *num_words; i++){
-		out[i] = strndup(filename, 5);
-		if(i > *num_words){
+	printf("vocab file has been opened\n");
+	for(size_t i = 1; i < word_count; i++){
+		printf("Insidde for loop\n");
+		if(i > word_count){
+			
+			printf("Before realloc\n");
 			if(realloc(out, 10 * sizeof(char)) != NULL){
+				
+				printf("Post realloc check\n");
 				out = (char **)realloc(out, 10 * sizeof(char));
+				word_count += 10;
+				
+				printf("Post realloc\n");
 			}
 			else{
+				*num_words = word_count;
 				return out;
 			}
+		out[i] = strndup(filename, 5);
 		}
 	}
 	fclose(&vocab);
+	printf("Vocab text file closed\n");
+	*num_words = word_count;
 	//printf("%zu\n", *num_words);
 	return out;
 }
