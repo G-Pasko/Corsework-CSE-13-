@@ -72,36 +72,36 @@ bool valid_guess(char *guess, char **vocabulary, size_t num_words) {
 char **load_vocabulary(char *filename, size_t *num_words) {
 	printf("Load vocab started\n");
 
-	char **out = (char **)calloc(10, sizeof(char));
+	char **out = (char **)calloc(10, sizeof(char*));
 	// TODO(you): finish this function
 	*num_words = 0;
 	size_t word_space = 10;
 	char buf[1024];
-	FILE* vocab = fopen(*filename, "r");
+	FILE* vocab = fopen(filename, "r");
 	printf("vocab file has been opened\n");
 	while(fgets(buf, 1024, vocab) != NULL){
-		printf("Inside for loop\n");
-		*num_words ++;
-		
-		if(num_words > word_space){	
+		printf("Inside while loop\n");	
+		out[*num_words] = strndup(filename, 5);
+		*num_words += 1;	
+		if(*num_words > word_space){	
 			printf("Before realloc\n");
-			if(realloc(out, 10 * sizeof(char)) != NULL){	
+			
+			if(realloc(out, word_space + 100) != NULL){	
 				printf("Post realloc check\n");
-				out = (char **)realloc(out, 10 * sizeof(char));
-				word_count += 10;
+				//out = (char **)realloc(out, (word_space + 100));
+				word_space += 100;
 				printf("Post realloc\n");
 			}
 			else{
-				*num_words = word_count;
+				*num_words = word_space;
 				return out;
 			}
 		}
-		out[i] = strndup(filename, 5);
 		
 	}
 	fclose(vocab);
 	printf("Vocab text file closed\n");
-	*num_words = word_count;
+	//*num_words = word_count;
 	//printf("%zu\n", *num_words);
 	return out;
 }
