@@ -28,7 +28,7 @@ bool score_guess(char *secret, char *guess, char *result) {
 				//strcpy(result, ('g'));
 			}
 			for(int j = i; j < 5; j++){
-				if(guess[i] == secret[j]){
+				if(track == 0 && guess[i] == secret[j]){
 					result[i] = 'y';
 					track = 2;	
 				}
@@ -38,7 +38,7 @@ bool score_guess(char *secret, char *guess, char *result) {
 				//strcpy(result, ('x'));
 			}
 		
-		int track = 0;
+			track = 0;
 		}
 		return false;
 	}
@@ -79,7 +79,7 @@ bool valid_guess(char *guess, char **vocabulary, size_t num_words) {
 // Each element of the array should be a single five-letter word,
 // null-terminated.
 char **load_vocabulary(char *filename, size_t *num_words) {
-	printf("Load vocab started\n");
+	//printf("Load vocab started\n");
 
 	char **out = (char **)calloc(10, sizeof(char*));
 	// TODO(you): finish this function
@@ -87,22 +87,22 @@ char **load_vocabulary(char *filename, size_t *num_words) {
 	size_t word_space = 10;
 	char buf[512];
 	FILE* vocab = fopen(filename, "r");
-	printf("vocab file has been opened\n");
+	//printf("vocab file has been opened\n");
 	while(fgets(buf, 512, vocab) != NULL){
-		printf("Inside while loop\n");	
+		//printf("Inside while loop\n");	
 		out[*num_words] = strndup(buf, 5);
 		*num_words += 1;	
 		if(*num_words >= word_space){	
-			printf("Before realloc\n");
+			//printf("Before realloc\n");
 			char** test = (char **)realloc(out, (word_space + 10)* sizeof(char*));
 			if(test != NULL){	
-				printf("Post realloc check\n");
+				//printf("Post realloc check\n");
 				out = test;
 				//free(test);
 				word_space = word_space + 10;
 				//out = (char **)realloc(out, word_space * sizeof(char));
-				printf("Post realloc\n");
-				//free(test);
+				//printf("Post realloc\n");
+				
 			}
 			else{
 				*num_words = word_space;
@@ -113,7 +113,7 @@ char **load_vocabulary(char *filename, size_t *num_words) {
 		
 	}
 	fclose(vocab);
-	printf("Vocab text file closed\n");
+	//printf("Vocab text file closed\n");
 	//*num_words = word_count;
 	//printf("%zu\n", *num_words);
 	return out;

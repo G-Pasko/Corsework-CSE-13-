@@ -12,15 +12,18 @@ Plan:
 
 Score guess:
 	Use a strcmp for guess and secret. If result is 0, make result all green and return end msg.
-	Else: Compare each letter in guess to that of secret and return a string with corresponding x,y,g values.
+
+	Else: Compare each letter in guess to secret with double for loops. if the letter is at the same index in secret, make the letter in that spot green (g). If it's in the word but at
+		a different index, color that spot yellow (y). If neither of those happen, color the spot with an x.
 
 Valid Guess:
 	Iterrate through the vocab list and do strcmp with guess and each word. If result ever equals 0 return true
 	Else return false
 
 Load Vocablary:
-	Open file and do calloc(size_t, charr) to allocate enough room for every word in the vocab list. Then iterrate through the file and copy the strings. Finally,
-	close the file and return the array of strings
+	Open the file, allocate memory to output, and create char array to pull words from text file. Set inital ammount of words to 10 and if there are still words to pull, realloc
+	enough memory for 10 more words. If no more memory can be realloced, return the output and close the file.
+	Finally, close the file and return the array of strings if the array of words reaches the end of the text file.
 
 Free vocabulary:
 	Iterate through array of words returned by LoadVocab and free their memery addresss until the the array is empty. Once the array is empty, free the memory address of the 
