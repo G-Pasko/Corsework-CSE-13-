@@ -16,26 +16,35 @@
 //   5. (ie, at least 6 bytes long)
 bool score_guess(char *secret, char *guess, char *result) {
   // TODO(you): finish this function
+	printf("%s\n", secret);
+
+	int track = 0;
 	while(strncmp(secret, guess, 5) != 0){
+		//int track = 0;
 		for(int i = 0; i < 5; i++){
 			if(guess[i] == secret[i]){
 				result[i] = 'g';
+				track = 1;
 				//strcpy(result, ('g'));
 			}
 			for(int j = i; j < 5; j++){
 				if(guess[i] == secret[j]){
 					result[i] = 'y';
-					//strcpy(result, ('y'));
-				}
-				else{
-					result[i] = 'x';
-					//strcpy(result, ('x'));
+					track = 2;	
 				}
 			}
+			if(track == 0){
+				result[i] = 'x';
+				//strcpy(result, ('x'));
+			}
+		
+		int track = 0;
 		}
 		return false;
 	}
-	result = "ggggg";
+	for(int j = 0; j < 5; j++){
+		result[j] = 'g';
+	}
 	return true;
 }
 
@@ -50,8 +59,8 @@ bool valid_guess(char *guess, char **vocabulary, size_t num_words) {
 			return true;
 		}
 	}
-	printf("%d\n", *guess == **vocabulary);
-	printf("%zu\n", num_words);
+	//printf("%d\n", *guess == **vocabulary);
+	//printf("%zu\n", num_words);
   return false;
 }
 
@@ -76,24 +85,28 @@ char **load_vocabulary(char *filename, size_t *num_words) {
 	// TODO(you): finish this function
 	*num_words = 0;
 	size_t word_space = 10;
-	char buf[1024];
+	char buf[512];
 	FILE* vocab = fopen(filename, "r");
 	printf("vocab file has been opened\n");
-	while(fgets(buf, 1024, vocab) != NULL){
+	while(fgets(buf, 512, vocab) != NULL){
 		printf("Inside while loop\n");	
-		out[*num_words] = strndup(filename, 5);
+		out[*num_words] = strndup(buf, 5);
 		*num_words += 1;	
-		if(*num_words > word_space){	
+		if(*num_words >= word_space){	
 			printf("Before realloc\n");
-			
-			if(realloc(out, word_space + 100) != NULL){	
+			char** test = (char **)realloc(out, (word_space + 10)* sizeof(char*));
+			if(test != NULL){	
 				printf("Post realloc check\n");
-				//out = (char **)realloc(out, (word_space + 100));
-				word_space += 100;
+				out = test;
+				//free(test);
+				word_space = word_space + 10;
+				//out = (char **)realloc(out, word_space * sizeof(char));
 				printf("Post realloc\n");
+				//free(test);
 			}
 			else{
 				*num_words = word_space;
+				fclose(vocab);
 				return out;
 			}
 		}
