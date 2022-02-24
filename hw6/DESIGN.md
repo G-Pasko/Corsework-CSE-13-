@@ -15,7 +15,9 @@ Granger's Design Doc
 		loop through word and if the letter of interest shows up, add 1 to score andmove onto next word.
 	Score word:
 		Set int score to 0
-		For each letter, run score letter and add letter score to "score"
+		Create an empty char array
+		For each letter, if the letter hasnt been accounted for, run score letter and add letter score to "score." 
+			Add letter to array
 		
 	Filter Vocab Grey:
 		For every word in vocab: if it contains the letter given, free the word and set the pointer to NULL

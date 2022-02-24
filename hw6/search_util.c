@@ -31,9 +31,14 @@ int score_letter(char letter, char **vocabulary, size_t num_words) {
 // score once.
 int score_word(char *word, int *letter_scores) {
 	int word_score = 0;
+	char letters[5];
 	for(int i = 0; i < 5; i++){
-		//printf("%d\n", letter_scores[word[i] -'a']);
-		word_score += letter_scores[word[i] - 'a'];
+		if(strchr(letters, word[i]) == NULL){
+			letters[i] = word[i];
+			word_score += letter_scores[word[i] - 'a'];
+			//letters[i] = word[i];
+		}
+		//letters[i] = word[i];
 	}
   // TODO(you): implement this function!
   return word_score;
