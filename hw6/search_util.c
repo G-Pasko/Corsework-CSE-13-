@@ -32,6 +32,7 @@ int score_letter(char letter, char **vocabulary, size_t num_words) {
 int score_word(char *word, int *letter_scores) {
 	int word_score = 0;
 	for(int i = 0; i < 5; i++){
+		//printf("%d\n", letter_scores[word[i] -'a']);
 		word_score += letter_scores[word[i] - 'a'];
 	}
   // TODO(you): implement this function!
@@ -75,16 +76,14 @@ size_t filter_vocabulary_gray(char letter, char **vocabulary,
                               size_t num_words) {
 	size_t removed = 0;
 	for(size_t i = 0; i < num_words; i++){
-		for(int j = 0; j < 5; j++){
-			if((vocabulary[i] != NULL) && vocabulary[i][j] == letter){
-				free(vocabulary[i]);
-				vocabulary[i] = NULL;
-				removed ++;
-			}
+		if((vocabulary[i] != NULL) && (strchr(vocabulary[i], letter) !=NULL)){
+			free(vocabulary[i]);
+			vocabulary[i] = NULL;
+			removed ++;
 		}
 	}
   // TODO(you): implement this function!
-  return 0;
+  return removed;
 
 }
 
@@ -120,7 +119,7 @@ size_t filter_vocabulary_green(char letter, int position, char **vocabulary,
   // TODO(you): implement this function!
 	size_t removed = 0;
 	for(size_t i = 0; i < num_words; i++){
-		if((vocabulary[i] != NULL) && (vocabulary[i][position] == letter)){
+		if((vocabulary[i] != NULL) && (vocabulary[i][position] != letter)){
 			free(vocabulary[i]);
 			vocabulary[i] = NULL;
 			removed ++;
