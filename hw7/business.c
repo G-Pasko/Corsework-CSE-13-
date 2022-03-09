@@ -65,7 +65,7 @@ void add_customer_to_hashtable(char* email, char *name, int shoesize, char *food
 
   buckets[which_bucket] = add_to_list(email, name, shoesize, food, buckets[which_bucket]);
 
-  printf("custoemr %s goes in bucket %lu .\n", name, which_bucket);
+  printf("customer %s goes in bucket %lu .\n", name, which_bucket);
 }
 
 	
@@ -74,47 +74,39 @@ int main(void){
 	//size_t NUM_BUCKETS = 10;	
 	//*num_words = 0;
 	//char command[10];
+	char email[50];
+	char name[30];
+	int shoesize;	
 	Customer* buckets[NUM_BUCKETS] = {NULL};
+	char food[50];
 	char customers[1024];
 	FILE* customer_file = fopen("customers.tsv", "r");
 	if(customer_file == NULL){
 		printf("No text file found\n");
 		return 0;
 	}
-	while(fgets(customers, 1024, customer_file) != NULL){
-		
+	while(fgets(customers, 1024, customer_file)){
+		fscanf(customers, "%s\t%[^\t]\t%d\t%[^\n]", email, name, &shoesize, food);
+		add_customer_to_hashtable(email, name, shoesize, food, buckets, NUM_BUCKETS);
 		//lineSplitter(customers);
 		printf("we split the line\n");
 	}
 
-		/*out[*num_words] = strndup(customers, 5);
-		*num_words += 1;
-		if(*num_words >= word_space){	
-			char** test = (char **)realloc(out, (word_space + 10)* sizeof(char*));
-			if(test != NULL){	
-				out = test;
-				word_space = word_space + 10;
-				
-			}
-			else{
-				*num_words = word_space;
-				fclose(vocab);
-				return out;
-			}
-		}
-		
-	}*/while(true){
+	fclose(customer_file);
+
+	FILE* write_customer_file = fopen("customers.tsv", "w");
+	while(true){
 
 		char command[10];
 		printf("command: ");
 		scanf("%s", command);
 		printf("%s\n", command);
-		FILE* customer_file = fopen("customers.tsv", "w");
+		//FILE* customer_file = fopen("customers.tsv", "w");
 		if(strcmp(command, "save") == 0){
 			return 0;
 		}
 		else if(strcmp(command, "quit") == 0){
-			fclose(customer_file);
+			fclose(write_customer_file);
 			return 0;
 		}
 
