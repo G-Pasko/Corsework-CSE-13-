@@ -146,15 +146,27 @@ int main(void){
 			printf("email address?\n");
 			scanf("%s", email);
 			size_t which_bucket = hash(email) % NUM_BUCKETS;
-
 			Customer* node;
 			node = buckets[which_bucket];
 			int result = 0;
 			while(node != NULL) {
 				if(strcmp(node->email, email) == 0) {
-					free(node);
 					
+					free(node->shoesize);
+					free(node->food);
+					free(node->email);
+					free(node->name);
+					free(node);
 					result = 1;
+					/*for(int i = 0; i < 10; i++){
+						node = buckets[i];
+						while(node != NULL){
+							printf("%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+							fprintf(write_customer_file,"%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+							node = node->next;
+						}
+					}*/
+
 					break;
 				}
 				node = node->next;
@@ -162,7 +174,6 @@ int main(void){
 			if(result == 0){
 				printf("email not found\n");
 			}
-			return 0;
 		}
 		
 		else if(strcmp(command, "list") == 0){
