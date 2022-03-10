@@ -63,7 +63,8 @@ int main(void){
 		return 0;
 	}
 	while(fgets(customers, 1024, customer_file)){
-		fscanf(customers, "%s\t%[^\t]\t%d\t%[^\n]", email, name, &shoesize, food);
+		sscanf(customers, "%s\t%[^\t]\t%d\t%[^\n]", email, name, &shoesize, food);
+		//fscanf(" %*[^\t] %128[^\t]%*[^\t] %*[^\t] %128[^\n]%*[^\n]", name_string, desc_string);
 		add_customer_to_hashtable(email, name, shoesize, food, buckets, NUM_BUCKETS);
 		//lineSplitter(customers);
 		printf("we split the line\n");
@@ -71,22 +72,38 @@ int main(void){
 
 	fclose(customer_file);
 
-	FILE* write_customer_file = fopen("customers.tsv", "w");
+	FILE* write_customer_file = fopen("customers.tsv", "a");
 	while(true){
 
 		char command[10];
 		printf("command: ");
 		scanf("%s", command);
-		printf("%s\n", command);
+		//printf("%s\n", command);
 		//FILE* customer_file = fopen("customers.tsv", "w");
 		if(strcmp(command, "save") == 0){
 			
-			while(true){
-				return 0;
+			Customer* node;
+			for(int i = 0; i < 10; i++){
+				node = buckets[i];
+				while(node != NULL){
+					printf("%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+					fprintf(write_customer_file,"%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+					node = node->next;
+				}
 			}
+
 		}
 
 		else if(strcmp(command, "quit") == 0){
+			Customer* node;
+			for(int i  = 0; i < 10; i++){
+				node = buckets[i];
+				while(node != NULL){
+					Customer* temp = node->next;
+					free(node);
+					node = temp;
+				}
+			}
 			fclose(write_customer_file);
 			return 0;
 		}
@@ -126,6 +143,8 @@ int main(void){
 		}
 
 		else if(strcmp(command, "delete") == 0){
+			printf("email address?\n");
+			scanf("%s", email);
 			size_t which_bucket = hash(email) % NUM_BUCKETS;
 
 			Customer* node;
@@ -134,6 +153,7 @@ int main(void){
 			while(node != NULL) {
 				if(strcmp(node->email, email) == 0) {
 					free(node);
+					
 					result = 1;
 					break;
 				}
