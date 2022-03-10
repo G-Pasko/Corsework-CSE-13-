@@ -30,6 +30,7 @@ Customer *add_to_list(char *email, char *name, int shoesize, char *food, Custome
 	new_cust = malloc(sizeof(Customer));
 	new_cust->email = strdup(email);
 	new_cust->name = strdup(name);
+	new_cust->shoesize = shoesize;
 	new_cust->food = strdup(food);
 	new_cust->next = bucket;
 
@@ -50,14 +51,11 @@ void add_customer_to_hashtable(char* email, char *name, int shoesize, char *food
 	
 
 int main(void){
-	//size_t NUM_BUCKETS = 10;	
-	//*num_words = 0;
-	//char command[10];
-	char email[50];
+	char email[30];
 	char name[30];
 	int shoesize;	
 	Customer* buckets[NUM_BUCKETS] = {NULL};
-	char food[50];
+	char food[20];
 	char customers[1024];
 	FILE* customer_file = fopen("customers.tsv", "r");
 	if(customer_file == NULL){
@@ -111,7 +109,6 @@ int main(void){
 			scanf("%s", email);
 			size_t which_bucket = hash(email) % NUM_BUCKETS;
 
-			//char *result = NULL;
 			Customer* node;
 			node = buckets[which_bucket];
 			int result = 0;
@@ -135,7 +132,7 @@ int main(void){
 			node = buckets[which_bucket];
 			int result = 0;
 			while(node != NULL) {
-				if (strcmp(node->email, email) == 0) {
+				if(strcmp(node->email, email) == 0) {
 					free(node);
 					result = 1;
 					break;
@@ -149,8 +146,15 @@ int main(void){
 		}
 		
 		else if(strcmp(command, "list") == 0){
-			return 0;
-		}
+			Customer* node;
+			for(int i = 0; i < 10; i++){
+				node = buckets[i];
+				while(node != NULL){
+					printf("%s %s %d %s\n", node->email, node->name, node->shoesize, node->food);
+					node = node->next;
+				}
+			}
+		}	
 		else{
 			printf("unknown command\n");
 		}
