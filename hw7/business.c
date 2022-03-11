@@ -45,7 +45,7 @@ void add_customer_to_hashtable(char* email, char *name, int shoesize, char *food
 	buckets[which_bucket] = add_to_list(email, name, shoesize, food, buckets[which_bucket]);
 	
 
-	printf("customer %s goes in bucket %lu .\n", name, which_bucket);
+	printf("customer %s goes in bucket %lu .\n", email, which_bucket);
 }
 
 	
@@ -62,64 +62,88 @@ int main(void){
 		printf("No text file found\n");
 		return 0;
 	}
-	while(fgets(customers, 1024, customer_file)){
+	while(fgets(customers, 1024, customer_file) != NULL){
 		sscanf(customers, "%s\t%[^\t]\t%d\t%[^\n]", email, name, &shoesize, food);
-		//fscanf(" %*[^\t] %128[^\t]%*[^\t] %*[^\t] %128[^\n]%*[^\n]", name_string, desc_string);
 		add_customer_to_hashtable(email, name, shoesize, food, buckets, NUM_BUCKETS);
-		//lineSplitter(customers);
-		printf("we split the line\n");
 	}
 
 	fclose(customer_file);
 
-	FILE* write_customer_file = fopen("customers.tsv", "a");
 	while(true){
 
 		char command[10];
 		printf("command: ");
 		scanf("%s", command);
-		//printf("%s\n", command);
-		//FILE* customer_file = fopen("customers.tsv", "w");
 		if(strcmp(command, "save") == 0){
-			
+			FILE* write_customer_file = fopen("customers.tsv", "w");
 			Customer* node;
 			for(int i = 0; i < 10; i++){
 				node = buckets[i];
 				while(node != NULL){
-					printf("%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
-					fprintf(write_customer_file,"%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+					if(node->email != NULL){
+						printf("%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+						fprintf(write_customer_file,"%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
+					}
 					node = node->next;
 				}
 			}
+			fclose(write_customer_file);
 
 		}
 
 		else if(strcmp(command, "quit") == 0){
 			Customer* node;
-			for(int i  = 0; i < 10; i++){
+			for(size_t i  = 0; i < NUM_BUCKETS; i++){
 				node = buckets[i];
 				while(node != NULL){
 					Customer* temp = node->next;
+					free(node->food);
+					node->food = NULL;
+					free(node->email);
+					node->email = NULL;
+					free(node->name);	
+					node->name = NULL;
 					free(node);
 					node = temp;
 				}
+				buckets[i] = NULL;
 			}
-			fclose(write_customer_file);
 			return 0;
 		}
 
 		else if(strcmp(command, "add") == 0){
 			printf("Enter email:\n");
 			scanf("%s", email);
+			size_t which_bucket = hash(email) % NUM_BUCKETS;
+			Customer* node;
+			node = buckets[which_bucket];
+			int result = 0;
+			while(node != NULL) {
+				if(node->email != NULL && strcmp(node->email, email) == 0){
+					result = 1;
+					break;
+				}
+				node = node->next;
+  			}
 			printf("Enter name:\n");	
-			scanf("%s", name);
+			scanf(" %29[^\n]s", name);
 			printf("Enter shoe size:\n");
 			scanf("%d", &shoesize);
 			printf("Enter favorite food:\n");
-			scanf("%s", food);
-			//Customer.next = (email, name, *shoesize, food);
-			add_customer_to_hashtable(email, name, shoesize, food, buckets, NUM_BUCKETS);
-			printf("%s %s %d %s\n", email, name, shoesize, food);
+			scanf(" %19[^\n]s", food);
+
+			if(result == 1){
+				free(node->name);
+				node->name = strdup(name);
+				free(node->food);
+				node->food = strdup(food);
+				node->shoesize = shoesize;
+			}
+			else{
+				printf("%d)\n", result);
+				add_customer_to_hashtable(email, name, shoesize, food, buckets, NUM_BUCKETS);
+				printf("%s %s %d %s\n", email, name, shoesize, food);
+			}
 		}
 		else if(strcmp(command, "lookup") == 0){
 			printf("email address?\n");
@@ -129,7 +153,7 @@ int main(void){
 			Customer* node;
 			node = buckets[which_bucket];
 			int result = 0;
-			while(node != NULL) {
+			while(node->email != NULL && node != NULL) {
 				if (strcmp(node->email, email) == 0) {
 					printf("%s %s %d %s\n", node->email, node->name, node->shoesize, node->food);
 					result = 1;
@@ -147,28 +171,24 @@ int main(void){
 			scanf("%s", email);
 			size_t which_bucket = hash(email) % NUM_BUCKETS;
 			Customer* node;
+			Customer* previous;
 			node = buckets[which_bucket];
 			int result = 0;
 			while(node != NULL) {
-				if(strcmp(node->email, email) == 0) {
-					
-					free(node->shoesize);
-					free(node->food);
+				if(strcmp(node->email, email) == 0) {	
 					free(node->email);
+					node->email = NULL;
 					free(node->name);
-					free(node);
+					node->name = NULL;
+					free(node->food);
+					node->food = NULL;
+					//buckets[which_bucket] = NULL;
 					result = 1;
-					/*for(int i = 0; i < 10; i++){
-						node = buckets[i];
-						while(node != NULL){
-							printf("%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
-							fprintf(write_customer_file,"%s\t%s\t%d\t%s\n", node->email, node->name, node->shoesize, node->food);
-							node = node->next;
-						}
-					}*/
-
+					node = node->next;
+					//free(node);
 					break;
 				}
+				previous = node;
 				node = node->next;
 			}
 			if(result == 0){
@@ -181,7 +201,9 @@ int main(void){
 			for(int i = 0; i < 10; i++){
 				node = buckets[i];
 				while(node != NULL){
-					printf("%s %s %d %s\n", node->email, node->name, node->shoesize, node->food);
+					if(node != NULL && node->email != NULL){
+						printf("%s %s %d %s\n", node->email, node->name, node->shoesize, node->food);
+					}
 					node = node->next;
 				}
 			}
