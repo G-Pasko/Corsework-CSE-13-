@@ -42,14 +42,23 @@ void reverse_doubles_with_stack(double *array, size_t array_len) {
   // stack behavior (LIFO) to get the numbers in the reversed order.
   // There is a way to do this without a stack data structure, I know. But this
   // is for practice with data structures.
-	LLdouble *top = (LLdouble *)malloc(sizeof(LLdouble));
-	top->val = array[0];
-	for(size_t i = 1; i < array_len; i++){
-		LLdouble *temp = (LLdouble *)malloc(sizeof(LLdouble));
-		temp->val = array[i];
-		temp->next = top;
-		temp = top;
-		
+	LLdouble *top = NULL;
+	//top->val = NULL;
+	//top->next = NULL;
+	//top->val = NULL;
+	for(size_t i = 0; i < array_len; i++){
+		LLdouble *new = (LLdouble *)malloc(sizeof(LLdouble));
+		new->val = array[i];
+		new->next = top;
+		top = new;
+	}
+	for(size_t j = 0; j < array_len; j++){
+		array[j] = top->val;
+		LLdouble *temp = top->next;
+		free(top);
+		top = NULL;
+		top = temp;
+	}		
 	
 
 }

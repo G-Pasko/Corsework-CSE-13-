@@ -19,8 +19,13 @@ size_t ll_length(LLint *node);
 size_t ll_length_iterative(LLint *node);
 
 // Problem 3.
-
+typedef struct LLdouble {
+	double val;
+	struct LLdouble *next;
+} LLdouble;
 // TODO(you): define LLdouble here.
+
+
 
 void reverse_doubles_with_stack(double *array, size_t array_len);
 
