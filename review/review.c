@@ -43,9 +43,6 @@ void reverse_doubles_with_stack(double *array, size_t array_len) {
   // There is a way to do this without a stack data structure, I know. But this
   // is for practice with data structures.
 	LLdouble *top = NULL;
-	//top->val = NULL;
-	//top->next = NULL;
-	//top->val = NULL;
 	for(size_t i = 0; i < array_len; i++){
 		LLdouble *new = (LLdouble *)malloc(sizeof(LLdouble));
 		new->val = array[i];
@@ -73,32 +70,22 @@ tnode *word_observe(char *word, tnode *node) {
 			return node;
 		}
 		if(strcmp(word, node->word) > 0){
-			if(node->right != NULL){
-				return(word_observe(word, node->right));
-			}
-			tnode *new = (tnode *)malloc(sizeof(tnode));
-			new->count = 1;
-			node->word = word;
-			node->right = new;
-			return new;
-		}
 			
+			node->right = word_observe(word, node->right);
+			return node;
+		}
+		
 		if(strcmp(word, node->word) < 0){
-			if(node->left != NULL){
-				return(word_observe(word, node->word));
-			}
-			tnode *new = (tnode *)malloc(sizeof(tnode));
-			new->count = 1;
-			new->word = word;
-			node->left = new;
-			return new;
+			node->left = word_observe(word, node->left);
+			return node;
 		}
 	}
-	node = (tnode *)malloc(sizeof(tnode));
-	node->count = 1;
-	node->word = word;
-	node->left = NULL;
-	node->right = NULL;	
+	tnode *new= (tnode *)malloc(sizeof(tnode));
+	new->count = 1;
+	new->word = strdup(word);
+	new->left = NULL;
+	new->right = NULL;	
+	return new;
 }
 
 int word_count(char *word, tnode *node) {
@@ -111,7 +98,7 @@ int word_count(char *word, tnode *node) {
 			return word_count(word, node->left);
 		}
 		if(strcmp(word, node->word) > 0 && node->right != NULL){
-			return word_count(word, node->left);		
+			return word_count(word, node->right);		
 		}
 	}
 	return 0;
@@ -126,6 +113,7 @@ void delete_tree(tnode *node) {
 	else if(node->left == NULL){
 		delete_tree(node->right);
 	}
-	delete_tree(node->left);
-		
+	else{
+		delete_tree(node->left);
+	}		
 }
