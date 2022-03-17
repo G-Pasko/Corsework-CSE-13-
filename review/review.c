@@ -107,7 +107,16 @@ int word_count(char *word, tnode *node) {
 void delete_tree(tnode *node) {
   // Free the whole tree and all associated memory. This can be recursive or
   // not, your choice!
+	if(node != NULL){
+		delete_tree(node->left);
+		delete_tree(node->right);
+		free(node->word);
+		free(node);
+	}
+	
+	/*
 	if(node->left == NULL && node->right == NULL){
+		free(node->word);
 		free(node);
 	}
 	else if(node->left == NULL){
@@ -115,5 +124,5 @@ void delete_tree(tnode *node) {
 	}
 	else{
 		delete_tree(node->left);
-	}		
+	}*/		
 }
