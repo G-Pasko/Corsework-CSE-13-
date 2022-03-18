@@ -10,11 +10,21 @@ WordCountTable *sum_word_count_tables(WordCountTable *table_a,
   // Your code here! You can change whatever you want in this function.
   // return an empty one just so we don't crash.
   WordCountTable *out = build_word_count_table(table_a->num_buckets);
-	for(size_t i = 0; i < table_a->num_buckets; i++){
-		
 
+	size_t i = 0;
+	while(i < table_a->num_buckets){
+		if(table_a->buckets[i]){
+			set_word_count(table_a->buckets[i]->word, table_a->buckets[i]->count, out);
+		}
+		i++;
 	}
-		
+	i = 0;
+	while(i < table_b->num_buckets){
+		if(table_b->buckets[i]){
+			set_word_count(table_b->buckets[i]->word, get_word_count(table_b->buckets[i]->word, out) + table_b->buckets[i]->count, out);
+		}
+		i++;
+	}
   return out;
 }
 
