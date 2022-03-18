@@ -10,21 +10,53 @@ WordCountTable *sum_word_count_tables(WordCountTable *table_a,
   // Your code here! You can change whatever you want in this function.
   // return an empty one just so we don't crash.
   WordCountTable *out = build_word_count_table(table_a->num_buckets);
-
+	char *table_a_words[256];
 	size_t i = 0;
+	int j = 0;
+	int leave;
+	WordCountNode *top;
 	while(i < table_a->num_buckets){
-		if(table_a->buckets[i]){
-			set_word_count(table_a->buckets[i]->word, table_a->buckets[i]->count, out);
+		if(table_a->buckets[i] != NULL){
+			top = table_a->buckets[i];
+			while(top != NULL){
+				while(table_a_words[j] != NULL){
+					if(strcmp(top->word, table_a_words[j]) == 0){
+							leave = 1;
+							break;
+					}
+					j++;
+				}
+				table_a_words[j] = top->word;
+				if(leave != 1){	
+					set_word_count(top->word, top->count, out);
+					//printf("%s : %d\n", top->word, top->count);
+				}
+				top=top->next;
+				leave = 0;
+				j = 0;
+				
+			}
 		}
 		i++;
 	}
 	i = 0;
+	j = 0;
+	
 	while(i < table_b->num_buckets){
 		if(table_b->buckets[i]){
-			set_word_count(table_b->buckets[i]->word, get_word_count(table_b->buckets[i]->word, out) + table_b->buckets[i]->count, out);
+			top = table_b->buckets[i];
+			while(top != NULL){
+				if(top->count == get_word_count(top->word, table_b)){
+
+					set_word_count(table_b->buckets[i]->word, get_word_count(table_b->buckets[i]->word, out) + table_b->buckets[i]->count, out);
+				}
+				top = top->next;
+			}
 		}
 		i++;
 	}
+
+
   return out;
 }
 

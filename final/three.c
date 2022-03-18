@@ -27,3 +27,5 @@ int depth_of_value(int value, BinaryTree *tree) {
 	return level;
 
 }
+// Code inspired by "Geeks for Geeks"
+// Link: https://www.geeksforgeeks.org/search-a-node-in-binary-tree/
